@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option java_package = "com.mera.server.grpc";
+
+message TemperatureSensor{
+    int32 id = 1;
+    float temperature = 2;
+    string type = 3;
+}
+message GetByIdRequest{
+    int32 id = 1;
+}
+message TemperatureRequest{
+    TemperatureSensor temperatureSensor = 1;
+}
+message TemperatureResponse{
+  TemperatureSensor temperatureSensor = 1;
+}
+
+message GetAllByDeviceIdRequest{
+    int32 id = 1;
+}
+
+service TemperatureService{
+  rpc GetRecordById (GetByIdRequest) returns (TemperatureResponse);
+  rpc GetAllByDeviceId(GetAllByDeviceIdRequest) returns (stream TemperatureResponse);
+  rpc Save (stream TemperatureRequest) returns (TemperatureResponse);
+  rpc SaveAll (stream TemperatureRequest) returns (stream TemperatureResponse);
+}
